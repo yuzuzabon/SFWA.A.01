@@ -107,5 +107,24 @@ public class ItemController {
 				
 				return "edit";
 		}
+		@PostMapping("/edit/{id}")
+		public String editItem(
+					@PathVariable Integer id,
+					@Valid Item item,
+					Errors errors,
+					RedirectAttributes rd,
+					Model model) {
+			if(errors.hasErrors()){
+				model.addAttribute("title","備品情報の変更");
+				model.addAttribute("locations", service.getItemLocations());
+				return "edit";
+				
+			}
+			service.editItem(item);
+			rd.addFlashAttribute("statusMessage", "備品情報を更新しました");
+			return "redirect:/items";
+			
+		
+		}
 
 }
