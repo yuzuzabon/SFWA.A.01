@@ -1,7 +1,6 @@
 package com.example.app.controller;
 
-import java.util.List;
-
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.app.domain.Item;
@@ -26,12 +26,23 @@ public class ItemController {
 
 		private final ItemService service;
 		private final ItemMapper mapper;
+		private final Integer numPerPage=5;
 
 		@GetMapping
-		public String showItems(Model model) {
-			List<Item>items=mapper.selectAll();
-			System.out.println(items);
-			model.addAttribute("items",items);
+		public String showItems(
+				@RequestParam(name="page",defaultValue="1")
+							Integer page,
+							HttpSession session,
+							Model model) {
+			//List<Item>items=mapper.selectAll();
+			//model.addAttribute("items",items);
+			//System.out.println(items);
+			//model.addAttribute("items",service.getAllItems());
+			model.addAttribute("items",
+					service.getItemListByPage(page,numPerPage));
+			model.addAttribute("page",page);
+			model.addAttribute("totalPages",
+					service.getTotalPages(numPerPage));
 			model.addAttribute("title","備品リスト");
 			System.out.println("getitem");
 			return "list";

@@ -19,4 +19,7 @@ public interface ItemService {
 		void deleteItem(Integer id);
 	//備品補完場所のリストを取得する
 		List<Location>getItemLocations();
+	//ページ分割機能用
+		List<Item>getItemListByPage(int page,int numPerPage);
+		int getTotalPages(int numPerPage);
 }
