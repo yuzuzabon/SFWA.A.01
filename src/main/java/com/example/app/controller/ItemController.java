@@ -83,6 +83,7 @@ public class ItemController {
 	  }
 			model.addAttribute("title","備品管理");
 			model.addAttribute("item",service.getItemById(id));
+						
 			return "detail";
 		}
 		@GetMapping("/delete/{id}")
@@ -100,7 +101,7 @@ public class ItemController {
 					Model model) {
 				model.addAttribute("title","備品情報の編集");
 				model.addAttribute("item",service.getItemById(id));
-				//model.addAttribute("item", new Item());
+			
 				model.addAttribute("locations", service.getItemLocations());
 				
 				System.out.println(service.getItemById(id));
@@ -121,8 +122,9 @@ public class ItemController {
 				
 			}
 			service.editItem(item);
-			rd.addFlashAttribute("statusMessage", "備品情報を更新しました");
-			return "redirect:/items";
+			rd.addFlashAttribute("successMessage", "備品情報を更新しました");
+			model.addAttribute("item",service.getItemById(id));
+			return "redirect:/items/detail/{id}";
 			
 		
 		}
