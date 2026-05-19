@@ -48,6 +48,18 @@
 	where id = #{id}
 </update>
 
+<select id="selectLimited" resultMap="itemMap">
+select
+	items.id,items.name,amount,location_id,locations.name as locations_name ,
+	note,registered,updated
+	from items join locations on items.location_id=locations.id
+	order by registered desc
+	limited #{offset},#{limit}
+
+</select>
+<select id="count" resultType="long">
+	select count(*) from items
+</select>
 
 
 </mapper>
