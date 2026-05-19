@@ -59,7 +59,10 @@
       <!-- /.container -->
     </nav>
     <div class="container mt-5">
-      <h1>[[${title}]]</h1>
+      <div th:if="${statusMessage}" class="alert alert-success mt-4">
+				[[${statusMessage}]]
+			</div>
+			<h1>[[${title}]]</h1>
       <a class="btn btn-primary my-3" th:href="@{/items/add}">備品の追加</a>
       <div class="row">
         <div class="col-md-12">
@@ -74,12 +77,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr th:each="items:${items}" class="align-middle">
-                <td>[[${items.id}]]</td>
-                <td>[[${items.name}]]</td>
-                <td>[[${items.amount}]]</td>
-                <td>[[${items.location.name}]]</td>
-                <td><a class="btn btn-warning" th:href="@{/items/detail/{id}(id=${items.id})}">詳細</a></td>
+              <tr th:each="item:${items}" class="align-middle">
+                <td>[[${item.id}]]</td>
+                <td>[[${item.name}]]</td>
+                <td>[[${item.amount}]]</td>
+                <td>[[${item.location.name}]]</td>
+                <td><a class="btn btn-warning" th:href="@{/items/detail/{id}(id=${item.id})}">詳細</a></td>
               </tr>
 <!--              <tr class="align-middle">
                 <td>2</td>
