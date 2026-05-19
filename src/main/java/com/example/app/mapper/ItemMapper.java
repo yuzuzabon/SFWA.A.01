@@ -3,6 +3,7 @@ package com.example.app.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.app.domain.Item;
 
@@ -19,4 +20,9 @@ public interface ItemMapper {
 	void update(Item item);
 	//ID番号に基づきitemsテーブルから１件分の備品データを削除する
 	void delete(int id);
+	//ページ分割機能用
+	List<Item>selectLimited(@Param("offset") int offset,
+													@Param("limit") int limit);
+	long count();
+	
 }

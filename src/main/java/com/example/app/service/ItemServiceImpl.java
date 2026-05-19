@@ -22,24 +22,25 @@ public class ItemServiceImpl implements ItemService{
 		@Override
 		public List<Item> getAllItems() {
 			// TODO 自動生成されたメソッド・スタブ
-			return null;
+			return itemMapper.selectAll();
 		}
 
 		@Override
 		public void addItem(Item item) {
 			// TODO 自動生成されたメソッド・スタブ
-			itemMapper.insert(item); 
+			itemMapper.insert(item);
 		}
 
 		@Override
 		public void editItem(Item item) {
 			// TODO 自動生成されたメソッド・スタブ
-
+			itemMapper.update(item);
 		}
 
 		@Override
 		public void deleteItem(Integer id) {
 			// TODO 自動生成されたメソッド・スタブ
+			itemMapper.delete(id);
 
 		}
 
@@ -52,7 +53,17 @@ public class ItemServiceImpl implements ItemService{
 		@Override
 		public Item getItemById(Integer id) {
 			// TODO 自動生成されたメソッド・スタブ
-			return null;
+			return itemMapper.selectById(id);
 		}
-
+		@Override
+		public List<Item>getItemListByPage(int page,int numPerPage){
+			int offset=numPerPage*(page-1);
+			return itemMapper.selectLimited(offset,numPerPage);
+		}
+		@Override
+		public int getTotalPages(int numPerPage) {
+			double totalNum=(double)itemMapper.count();
+			return (int)Math.ceil(totalNum/numPerPage);
+		}
+		
 }
