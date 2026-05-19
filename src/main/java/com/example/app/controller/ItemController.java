@@ -30,21 +30,28 @@ public class ItemController {
 
 		@GetMapping
 		public String showItems(
-				@RequestParam(name="page",defaultValue="1")
+				@RequestParam(name="page", required = false)
 							Integer page,
 							HttpSession session,
 							Model model) {
+			Integer sessionPage=(Integer) session.getAttribute("sessionPage");
+			int currentPage=(sessionPage != null) ? sessionPage:1;
+			if(page != null) {
+				currentPage=page;
+				session.setAttribute("sessionPage", currentPage);
+			}
 			//List<Item>items=mapper.selectAll();
 			//model.addAttribute("items",items);
 			//System.out.println(items);
 			//model.addAttribute("items",service.getAllItems());
 			model.addAttribute("items",
-					service.getItemListByPage(page,numPerPage));
-			model.addAttribute("page",page);
+					service.getItemListByPage(currentPage,numPerPage));
+			model.addAttribute("page",currentPage);
 			model.addAttribute("totalPages",
 					service.getTotalPages(numPerPage));
 			model.addAttribute("title","備品リスト");
 			System.out.println("getitem");
+			System.out.println(currentPage);
 			return "list";
 
 		}
@@ -94,7 +101,7 @@ public class ItemController {
 	  }
 			model.addAttribute("title","備品管理");
 			model.addAttribute("item",service.getItemById(id));
-						
+
 			return "detail";
 		}
 		@GetMapping("/delete/{id}")
@@ -112,11 +119,11 @@ public class ItemController {
 					Model model) {
 				model.addAttribute("title","備品情報の編集");
 				model.addAttribute("item",service.getItemById(id));
-			
+
 				model.addAttribute("locations", service.getItemLocations());
-				
+
 				System.out.println(service.getItemById(id));
-				
+
 				return "edit";
 		}
 		@PostMapping("/edit/{id}")
@@ -130,14 +137,14 @@ public class ItemController {
 				model.addAttribute("title","備品情報の変更");
 				model.addAttribute("locations", service.getItemLocations());
 				return "edit";
-				
+
 			}
 			service.editItem(item);
 			rd.addFlashAttribute("successMessage", "備品情報を更新しました");
 			model.addAttribute("item",service.getItemById(id));
 			return "redirect:/items/detail/{id}";
-			
-		
+
+
 		}
 
 }

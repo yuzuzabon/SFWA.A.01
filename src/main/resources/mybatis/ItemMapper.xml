@@ -44,7 +44,7 @@
 <update id="update" parameterType="Item">
 	update items
 	set name=#{name},amount=#{amount},location_id=#{location.id},
-	note=#{note},updated=now() 
+	note=#{note},updated=now()
 	where id = #{id}
 </update>
 
@@ -54,7 +54,7 @@ select
 	note,registered,updated
 	from items join locations on items.location_id=locations.id
 	order by registered desc
-	limited #{offset},#{limit}
+	limit #{offset},#{limit}
 
 </select>
 <select id="count" resultType="long">
