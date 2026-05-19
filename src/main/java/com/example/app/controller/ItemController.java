@@ -83,6 +83,7 @@ public class ItemController {
 	  }
 			model.addAttribute("title","備品管理");
 			model.addAttribute("item",service.getItemById(id));
+						
 			return "detail";
 		}
 		@GetMapping("/delete/{id}")
@@ -100,14 +101,32 @@ public class ItemController {
 					Model model) {
 				model.addAttribute("title","備品情報の編集");
 				model.addAttribute("item",service.getItemById(id));
-				//model.addAttribute("item", new Item());
+			
 				model.addAttribute("locations", service.getItemLocations());
-				Item item = service.getItemById(id);
-				System.out.println("取得した場所のID: " + (item.getLocation() != null ? item.getLocation().getId() : "NULLです！"));
-				model.addAttribute("item", item);
-
-
+				
+				System.out.println(service.getItemById(id));
+				
 				return "edit";
+		}
+		@PostMapping("/edit/{id}")
+		public String editItem(
+					@PathVariable Integer id,
+					@Valid Item item,
+					Errors errors,
+					RedirectAttributes rd,
+					Model model) {
+			if(errors.hasErrors()){
+				model.addAttribute("title","備品情報の変更");
+				model.addAttribute("locations", service.getItemLocations());
+				return "edit";
+				
+			}
+			service.editItem(item);
+			rd.addFlashAttribute("successMessage", "備品情報を更新しました");
+			model.addAttribute("item",service.getItemById(id));
+			return "redirect:/items/detail/{id}";
+			
+		
 		}
 
 }
